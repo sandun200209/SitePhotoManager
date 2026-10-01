@@ -1,0 +1,35 @@
+# Build output
+target/
+build/
+*.class
+
+# IntelliJ IDEA & IDE files
+.idea/
+*.iml
+*.iws
+*.ipr
+.vscode/
+.settings/
+.project
+.classpath
+.factorypath
+.apt_generated
+
+# Local uploaded files (site photos, floor plans)
+uploads/
+
+# Environment variables & local secrets
+.env
+.env.*
+*.local
+
+# Operating System & Temporary files
+.DS_Store
+Thumbs.db
+desktop.ini
+*.log
+*.tmp
+*.bak
+
+# Maven Wrapper
+!.mvn/wrapper/maven-wrapper.jar

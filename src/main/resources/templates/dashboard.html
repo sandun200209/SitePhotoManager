@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - SitePhotoManager</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <header class="app-header">
+        <a th:href="@{/dashboard}" class="app-brand">
+            <span>🏗️</span>
+            <span>SitePhotoManager</span>
+        </a>
+        <div class="user-badge">
+            <span th:text="${userEmail}">user@sitephoto.com</span>
+            <span sec:authorize="hasRole('ADMIN')" style="background:#dbeafe;color:#1e40af;font-size:0.75rem;padding:0.2rem 0.5rem;border-radius:4px;font-weight:700;">ADMIN</span>
+            <span sec:authorize="hasRole('ENGINEER')" style="background:#fef3c7;color:#92400e;font-size:0.75rem;padding:0.2rem 0.5rem;border-radius:4px;font-weight:700;">ENGINEER</span>
+            <span sec:authorize="hasRole('SUPERVISOR')" style="background:#e0e7ff;color:#3730a3;font-size:0.75rem;padding:0.2rem 0.5rem;border-radius:4px;font-weight:700;">SUPERVISOR</span>
+            <span sec:authorize="hasRole('VIEWER')" style="background:#f1f5f9;color:#475569;font-size:0.75rem;padding:0.2rem 0.5rem;border-radius:4px;font-weight:700;">VIEWER</span>
+            <form th:action="@{/logout}" method="post" style="display:inline;">
+                <button type="submit" class="btn btn-sm btn-outline-danger">Sign Out</button>
+            </form>
+        </div>
+    </header>
+
+    <main class="container">
+        <h2 style="margin-bottom: 1.5rem; font-size: 1.5rem; font-weight: 700;">Site Overview</h2>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value" th:text="${totalProjects}">0</div>
+                <div class="stat-label">Total Projects</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" th:text="${totalFloorPlans}">0</div>
+                <div class="stat-label">Total Floor Plans</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" th:text="${totalRooms}">0</div>
+                <div class="stat-label">Total Rooms</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" th:text="${totalPhotos}">0</div>
+                <div class="stat-label">Total Photos</div>
+            </div>
+        </div>
+
+        <div style="background: #ffffff; border-radius: 12px; padding: 1.5rem; border: 1px solid var(--border-color);">
+            <h3 style="margin-bottom: 1rem; font-size: 1.15rem; font-weight: 700;">Recent Site Photo Uploads</h3>
+            <div th:if="${#lists.isEmpty(recentPhotos)}" style="color: var(--text-muted); font-size: 0.95rem;">
+                No site photos uploaded yet. They will appear here once uploaded.
+            </div>
+            <div th:unless="${#lists.isEmpty(recentPhotos)}" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 1rem;">
+                <div th:each="photo : ${recentPhotos}" style="border: 1px solid var(--border-color); border-radius: 8px; overflow: hidden; background: #fff;">
+                    <img th:src="${photo.fileUrl}" alt="Photo" style="width: 100%; height: 140px; object-fit: cover;">
+                    <div style="padding: 0.5rem;">
+                        <span th:text="${photo.category.displayName}" style="font-size: 0.75rem; font-weight: 600; color: var(--primary);">Category</span>
+                        <p th:text="${photo.description}" style="font-size: 0.8rem; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
